@@ -3,8 +3,23 @@ const express = require("express");
 const server = express();
 module.exports = server;
 
-server.use((request, response) => {
-  response.status(404).send("<h1>Not found</h1>");
+const staticHandler = express.static("public");
+server.use(staticHandler);
+
+server.get("/", (request, response) => {
+  response.send(`
+    <!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Home</title>
+        <link rel="stylesheet" href="/style.css>
+      </head>
+      <body>
+        <h1>Hello</h1>
+      </body>
+    </html>
+  `);
 });
 
 //console.log(process.env.TEST);
