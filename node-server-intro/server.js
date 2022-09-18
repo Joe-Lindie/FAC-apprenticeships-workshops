@@ -6,23 +6,17 @@ module.exports = server;
 const staticHandler = express.static("public");
 server.use(staticHandler);
 
-server.get("/", (request, response) => {
-  response.send(`
-    <!doctype html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <title>Home</title>
-        <link rel="stylesheet" href="/style.css>
-      </head>
-      <body>
-        <h1>Hello</h1>
-      </body>
-    </html>
-  `);
+const bodyParser = express.urlencoded();
+
+server.post("/submit", bodyParser, (request, response) => {
+  const name = request.body.name;
+  response.redirect(`/submit/success?name=${name}`);
 });
 
-//console.log(process.env.TEST);
+server.get("/submit/success", (request, response) => {
+  const name = request.query.name;
+  response.send(`<p>Thanks for submitting, ${name}</p>`);
+});
 
 //Express will set the staus code to 200 by default.
 //Unless 'response.status(status code)' is set
