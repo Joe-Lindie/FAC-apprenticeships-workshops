@@ -30,11 +30,13 @@ server.get("/", (request, response) => {
 
 //  HTML pages can include inline <style> tags...
 
+// How do search parementer work? request.query.hex;
+
 server.get("/colour", (request, response) => {
-  let hex = request.query.hex || "FFFFFF";
+  let hex = request.query.hex;
 
   if (hex === undefined) {
-    hex = "FFFFFF";
+    hex = "0000FF"; //hex for white #ffffff
   }
 
   response.send(
@@ -44,17 +46,13 @@ server.get("/colour", (request, response) => {
             <meta charset="utf-8">
             <title>Home</title>
           </head>
-          <body style ="background-colour: #${hex}">
+          <body>
+          <style>
+            body { background-color: #${hex}}
+          </style>
           <h1>Hello Express</h1>
           </body>
         </html>
-        `
+  `
   );
 });
-
-// server.js
-
-// server.get("/search", (request, response) => {
-//     const keyword = request.query.keyword;
-//     response.send(`<p>You searched for ${keyword}</p>`);
-//   }
