@@ -4,7 +4,11 @@ const server = express();
 
 module.exports = server;
 
+//////////////////
+
 //CHALLENGE 1
+
+//////////////////
 
 //Create a new route for the homepage at GET /. It should return an HTML body including a <h1>Hello Express</h1>.
 
@@ -24,7 +28,11 @@ server.get("/", (request, response) => {
   );
 });
 
+//////////////////
+
 //CHALLENGE 2
+
+//////////////////
 
 // Create a new route at GET /colour. It should check the URL's search parameters for a hex property. If present the returned HTML page should have its <body> element's background-color set to the hex value. E.g. this request GET /colour?hex=ff0000 should result in an HTML page with a red background. If hex is not present the background should be white.
 
@@ -57,17 +65,15 @@ server.get("/", (request, response) => {
 //   );
 // });
 
+//////////////////
+
 //CHALLENGE 3
+
+//////////////////
 
 // Edit your GET /colour route to include a form in the HTML response. This form should include an input for the user to type in a hex code.
 
 //When the form is submitted a GET request will be sent to the same route, which will change the background of the page to whatever the user entered.
-
-//Comment out challenge 2
-// Re write challenger 2
-// Add form tags to HTML response
-// Add input tag inside form
-// add get request to form
 
 server.get("/colour", (request, response) => {
   let hex = request.query.hex;
@@ -103,4 +109,54 @@ server.get("/colour", (request, response) => {
 </html>
 
  `);
+});
+
+//////////////////
+
+//CHALLENGE 4
+
+//////////////////
+
+// Create a new route GET /cheese. It should return an HTML response containing a form for submitting new cheeses. The form shoudl send POST requests to the same page. It should include a text input for the cheese name and a range input for the cheese's rating (from 0 to 5).
+
+// create new get server.get
+// give it route of /cheese
+
+//Add a response.sent containing the HTML file
+// add form
+// inside form add lable
+// add text input
+// add range input 0-5
+// add submit button
+// action set to same route (/cheese)
+// method POST
+
+server.get("/cheese", (request, response) => {
+  response.send(`
+    
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>CHALLENGE 4</title>
+    </head>
+
+    <body>
+      <form action="/cheese" method="POST">
+
+        <label for="cheese">New Cheese</label>
+        <input id="cheese" type="text" name="cheese" />
+  
+        <label for="cheese_rating">Cheese Rating</label>
+        <input type="range" id="cheese_rating" name="cheese" min="0" max="5" />
+        <button>Submit</button>
+        
+      </form>
+    </body>
+  </html>
+  
+  `);
 });
