@@ -119,22 +119,16 @@ server.get("/colour", (request, response) => {
 
 // Create a new route GET /cheese. It should return an HTML response containing a form for submitting new cheeses. The form shoudl send POST requests to the same page. It should include a text input for the cheese name and a range input for the cheese's rating (from 0 to 5).
 
-// create new get server.get
-// give it route of /cheese
-
-//Add a response.sent containing the HTML file
-// add form
-// inside form add lable
-// add text input
-// add range input 0-5
-// add submit button
-// action set to same route (/cheese)
-// method POST
+const cheeseArray = [];
 
 server.get("/cheese", (request, response) => {
-  response.send(`
-    
+  let cheeseList = "";
 
+  for (const cheese of cheeseArray) {
+    cheeseList += `<li>${cheese.join(" ")} star </li>`;
+  }
+
+  response.send(`
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -153,10 +147,39 @@ server.get("/cheese", (request, response) => {
         <label for="cheese_rating">Cheese Rating</label>
         <input type="range" id="cheese_rating" name="cheese" min="0" max="5" />
         <button>Submit</button>
+
+        <ul">
+          ${cheeseList}
+        </ul>
         
       </form>
     </body>
   </html>
   
   `);
+});
+
+//////////////////
+
+//CHALLENGE 5
+
+//////////////////
+
+// Create a new route POST /cheese. It should receive the POST request from the previous form and use the built-in Express middleware to read the url-encoded request body.
+
+// It should store each cheese rating in an array outside of the handler function, so other routes can access this information. Once the new rating is pushed to this array it should redirect back to the same page.
+
+// Amend the GET /cheese handler to render a list of cheese ratings that have been submitted.
+
+// Hint: you can dynamically create an HTML list from an array by looping over it with for..of or .map().join("") to create a string. E.g.
+
+// Submitting the form should result in the page reloading and displaying the newly added cheese in the list.
+
+const bodyParser = express.urlencoded();
+
+server.post("/cheese", bodyParser, (request, response) => {
+  const cheese = request.body.cheese;
+  cheeseArray.push(cheese);
+
+  response.redirect("/cheese");
 });
