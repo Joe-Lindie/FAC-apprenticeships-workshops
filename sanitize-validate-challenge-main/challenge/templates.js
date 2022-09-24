@@ -1,4 +1,4 @@
-function home(posts) {
+function home(posts, nicknameError, msgError) {
   const title = "All posts";
   const content = /*html*/ `
     <h2>New post</h2>
@@ -6,10 +6,14 @@ function home(posts) {
       <p>
         <label for="nickname">Nickname</label>
         <input id="nickname" name="nickname">
+        <p>${nicknameError ? "please enter your nickname" : ""}</p>
       </p>
       <p>
         <label for="message">Message</label>
         <textarea id="message" name="message"></textarea>
+        <p>${msgError ? "please enter your message" : ""}</p>
+        <p>
+
       </p>
       <button>Send</button>
     </form>
@@ -20,6 +24,8 @@ function home(posts) {
   `;
   return layout(title, content);
 }
+
+//safe sanitized version that cannot be interpreted as valid HTML
 
 function sanitize(string) {
   const newStr = string.replaceAll("<", "&lt;");

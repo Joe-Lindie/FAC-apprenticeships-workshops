@@ -15,14 +15,21 @@ server.post("/", express.urlencoded({ extended: false }), (req, res) => {
   const message = req.body.message;
   const created = Date.now();
 
-  if (nickname === "" || message === "") {
-    // response.status(400).send("bad request");
-    return;
-  }
-  // Will make sure the user cannot enter an empty string
+  let nicknameError = true;
+  let msgError = true;
 
-  posts.push({ nickname, message, created });
-  res.redirect("/");
+  if (nickname === "" && message === "") {
+    res.status(400).send(home(posts, nicknameError, msgError));
+  } else if (nickname === "") {
+    nicknameError = false;
+    res.status(400).send(home(posts, nicknameError, msgError));
+  } else if (message === "") {
+    msgError = false;
+    res.status(400).send(home(posts, nicknameError, msgError));
+  } else {
+    posts.push({ nickname, message, created });
+    res.redirect("/");
+  }
 });
 
 module.exports = server;
