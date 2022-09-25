@@ -3,7 +3,7 @@ const { join } = require("node:path");
 const database = require("better-sqlite3");
 
 const db = new database(process.env.DB_FILE);
-//console.log(db);
+console.log(db);
 
 /////////////////////////
 
