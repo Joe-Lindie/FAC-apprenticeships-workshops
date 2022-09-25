@@ -9,7 +9,7 @@ console.log(db);
 
 // Examples of selecting contect from table
 
-/////////////////////////
+//////////////////////////
 
 // const select_date = db.prepare("SELECT DATE()");
 // const result = select_date.get();
