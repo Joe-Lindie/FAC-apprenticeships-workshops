@@ -21,9 +21,7 @@ function listProducts() {
   return retrieve_products.all();
 }
 
-//write a function listProducts
-//Export a function listProducts (EXPORT STATMENT AT BOTTOM ↓↓↓↓↓↓)
-// Retrieve all products from the 'products' DB
+//EXPORT STATMENT AT BOTTOM ↓↓↓↓↓↓
 
 //////////////////////////
 
@@ -55,4 +53,15 @@ function searchProducts(search_string) {
 
 //////////////////////////
 
-module.exports = { listProducts, searchProducts };
+const matching_product = db.prepare(/*sql*/ `
+SELECT id, name FROM products WHERE id = ?`);
+
+function getProduct(id) {
+  return matching_product.get(id);
+}
+
+// if console.log(getProduct(1)); //  { id: 1 }
+// output: {name: 'chai'}
+// expected output {id: 1, name: 'chai'}
+
+module.exports = { listProducts, searchProducts, getProduct };
