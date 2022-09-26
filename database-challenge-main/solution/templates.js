@@ -84,7 +84,7 @@ function AddProductForm({ title, categories, errors = {} }) {
       </p>
       <p>
         <label>Category</label>
-        <select name="category_id">
+        <select name="">
           ${options.join("")}
         </select>
       </p>
