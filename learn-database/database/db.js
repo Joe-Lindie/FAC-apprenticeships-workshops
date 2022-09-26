@@ -7,7 +7,7 @@ const Database = require("better-sqlite3");
 //Node makes environment variables available via the global process.env object. So we could read that TEST variable using this JS:
 
 const db = new Database(process.env.DB_FILE);
-console.log(db);
+// console.log(db);
 
 const schemaPath = join("database", "schema.sql");
 const schema = readFileSync(schemaPath, "utf-8");
