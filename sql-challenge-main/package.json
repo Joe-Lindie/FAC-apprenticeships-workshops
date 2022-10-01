@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start": "DB_FILE=test.sqlite node -r ./database/seed.js model.js",
     "test": "DB_FILE=test.sqlite node -r ./database/seed.js --test",
     "test:1": "DB_FILE=test.sqlite node -r ./database/seed.js test/one.test.js",
     "test:2": "DB_FILE=test.sqlite node -r ./database/seed.js test/two.test.js",

@@ -1,69 +1,110 @@
 const db = require("./database/db.js");
 
-// 1-  List the names of all cohorts that took place in Finsbury Park.
+//////////////////////
 
-const select_cohorts_in_finsbo = db.prepare(/*sql*/ `
+//Challenge 1
+
+// List the names of all cohorts that took place in Finsbury Park.
+
+//////////////////////
+
+const cohortsInFinsburyPark = db.prepare(/*sql*/ `
   SELECT name FROM cohorts
   WHERE location = 'Finsbury Park'
 `);
 
 function listCohortsInFinsbo() {
-  return select_cohorts_in_finsbo.all();
+  return cohortsInFinsburyPark.all();
 }
+//Expected [ { name: '14' }, { name: '15' }, { name: '16' }, { name: '17' } ]
 
-// 2- List the usernames of all students who attended FAC in Finsbury Park.
+//////////////////////
 
-const select_students_in_finsbo = db.prepare(/*sql*/ `
-  -- [2]
-  SELECT students.username FROM students 
-  JOIN cohorts ON cohorts.name = students.cohort_name
-  WHERE cohorts.location = 'Finsbury Park'
+//Challenge 2
+
+// List the usernames of all students who attended FAC in Finsbury Park.
+
+//////////////////////
+
+const usernameFacFinsbury = db.prepare(/*sql*/ `
+    SELECT students.username FROM students
+    JOIN cohorts ON cohorts.name = students.cohort_name
+    WHERE cohorts.location = 'Finsbury Park'
 `);
 
-function listStudentsInFinsbo() {
-  return select_students_in_finsbo.all();
+function usernameFinsburyPark() {
+  return usernameFacFinsbury.all();
 }
+//Expected [{username: 'blah'}, {username: 'blah'}]
 
-//3-  List the username of each student along with the location of their cohort.
+//////////////////////
 
-const select_students_with_location = db.prepare(/*sql*/ `
-  -- [3]
-  SELECT students.username, cohorts.location  FROM students
-  JOIN cohorts ON cohorts.name = students.cohort_name 
+//Challenge 3
+
+// List the username of each student along with the location of their cohort.
+
+//////////////////////
+
+const usernameOfAllStudents = db.prepare(/* sql */ `
+    SELECT students.username, cohorts.location FROM students
+    JOIN cohorts ON cohorts.name = students.cohort_name
 `);
 
 function listStudentsWithLocation() {
-  return select_students_with_location.all();
+  return usernameOfAllStudents.all();
 }
 
-//List all project names with the usernames of the students who worked on them.
+//////////////////////
 
-// [{username: name_of_student, project name: name of project }]
+//Challenge 4
 
-const select_students_with_projects = db.prepare(/*sql*/ `
-  -- [4]
-  SELECT students_projects.project_id from students_projects
+// List all project names with the usernames of the students who worked on them.
+
+//////////////////////
+
+const select_students_with_projects = db.prepare(/* sql */ `
+    SELECT projects.name, 
+    students_projects.student_username AS username
+    FROM projects 
+    JOIN students_projects 
+    ON students_projects.project_id = projects.id
 `);
 
 function listStudentsWithProjects() {
   return select_students_with_projects.all();
 }
-console.log(listStudentsWithProjects);
 
-// const select_students_with_projects_in_finsbo = db.prepare(/*sql*/ `
-//   -- [5]
-// `);
+//////////////////////
 
-// function listStudentsWithProjectsInFinsbo() {
-//   return select_students_with_projects_in_finsbo.all();
-// }
-// SELECT students_projects.username, projects.name
-// FROM students JOIN projects
-// ON students.project_id = projects.id
+//Challenge 5
+
+// List all project names with the usernames of the students who worked on them, only for students who attended FAC in Finsbury Park.
+
+//////////////////////
+
+const all_project_names = db.prepare(/* sql */ `
+      SELECT 
+      projects.name,
+      students_projects.student_username AS username
+      FROM projects
+
+      JOIN students_projects 
+      ON students_projects.project_id = projects.id
+
+      JOIN students ON students.username = students_projects.student_username
+
+`);
+
+function challenge5() {
+  return all_project_names.all();
+}
+
+console.log(challenge5());
+
 module.exports = {
   listCohortsInFinsbo,
-  listStudentsInFinsbo,
+  usernameFinsburyPark,
   listStudentsWithLocation,
   listStudentsWithProjects,
-  // listStudentsWithProjectsInFinsbo,
+  challenge5,
 };
