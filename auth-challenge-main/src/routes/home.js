@@ -25,7 +25,7 @@ function get(req, res) {
       ${
         session
           ? /*html*/ `<form method="POST" action="/log-out"><button class="Button">Log out</button></form>`
-          : /*html*/ `<nav><a href="/sign-up">Sign up</a>or <a href="/log-in">log in</a></nav>`
+          : /*html*/ `<nav><a href="/sign-up">Sign up</a> or <a href="/log-in">log in</a></nav>`
       }
     </div>
   `;

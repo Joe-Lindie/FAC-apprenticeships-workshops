@@ -4,7 +4,21 @@ const {
 } = require("../model/confessions.js");
 const { Layout } = require("../templates.js");
 
+const { getSession } = require("../model/session");
+
 function get(req, res) {
+  const sid = req.signedCookies.sid; // session ID from signed cookie
+  const session = getSession(sid); // pass sid to the getSessions fn
+  const loggedInUserId = session && session.user_id;
+  const pageOwner = Number(req.params.user_id); // Will add any value to the req.params object
+  //console.log(page_owner);
+
+  if (loggedInUserId !== pageOwner) {
+    //user logged in
+    res.status(401).send("<h1>Please log in to view this page</h1>");
+  } else {
+    //user logged in
+  }
   /**
    * Currently any user can view any other user's private confessions!
    * We need to ensure only the logged in user can see their page.
