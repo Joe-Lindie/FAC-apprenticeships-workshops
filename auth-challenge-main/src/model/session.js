@@ -48,7 +48,7 @@ function createSession(user_id) {
   return sid;
 }
 
-const select_session = db.prepare(`
+const select_session = db.prepare(/* sql */ `
   SELECT id, user_id, expires_at
   FROM sessions WHERE id = ?
 `);

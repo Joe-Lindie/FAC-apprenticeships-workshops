@@ -1,4 +1,17 @@
+///////////////
+
+// CHALLENGE 4: LOG-OUT BUTTON
+
+/////////////////
+
+const { removeSession } = require("../model/session");
+
 function post(req, res) {
+  const sid = req.signedCookies.sid;
+  removeSession(sid);
+  res.clearCookie("sid");
+  res.redirect("/");
+
   /**
    * [1] Get the session ID from the cookie
    * [2] Remove that session from the DB
