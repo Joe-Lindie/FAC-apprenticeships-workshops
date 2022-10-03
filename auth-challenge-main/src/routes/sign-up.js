@@ -22,20 +22,53 @@ function get(req, res) {
   res.send(body);
 }
 
+///////////////
+
+// CHALLENGE 2: SIGN UP
+
+/////////////////
+
+//Use the bcryptjs library to hash the password the user submitted
+const bcrypt = require("bcryptjs");
+
+//Import functions needed
+const { createSession } = require("../model/session");
+const { createUser } = require("../model/user");
+
 function post(req, res) {
   const { email, password } = req.body;
   if (!email || !password) {
     res.status(400).send("Bad input");
   } else {
-    res.send("to-do");
-    /**
-     * [1] Hash the password
-     * [2] Create the user in the DB
-     * [3] Create the session with the new user's ID
-     * [4] Set a cookie with the session ID
-     * [5] Redirect to the user's confession page (e.g. /confessions/3)
-     */
+    //bcryptjs library to hash the password
+    bcrypt.hash(password, 12).then((hash) => {
+      //Insert a new user into the DB
+      const user = createUser(email, hash);
+      console.log(user);
+
+      //Insert a new session into the DB
+      const session_id = createSession(user.id);
+
+      //Set a signed sid cookie containing the session ID
+      res.cookie("sid", session_id, {
+        signed: true,
+        httpOnly: true,
+        maxAge: 6000,
+        sameSite: "lax",
+      });
+
+      //Redirect to the new user's confession page
+      res.redirect(`/confessions/${user.id}`);
+    });
   }
 }
+
+/**
+ * [1] Hash the password
+ * [2] Create the user in the DB
+ * [3] Create the session with the new user's ID
+ * [4] Set a cookie with the session ID
+ * [5] Redirect to the user's confession page (e.g. /confessions/3)
+ */
 
 module.exports = { get, post };

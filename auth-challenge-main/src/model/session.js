@@ -3,7 +3,7 @@ const crypto = require("node:crypto");
 
 ///////////////
 
-// Challenge 1: Create Sessions
+// CHALLENGE 1: CREATE SESSIONS
 // ANSWER 1
 
 /////////////////
@@ -36,15 +36,16 @@ const crypto = require("node:crypto");
 
 const insert_session = db.prepare(/*sql*/ `
   INSERT INTO sessions (id, user_id, expires_at) 
-    VALUES ( $id, $user_id, DATE('now', '+7 days'))
+    VALUES ( $sid, $user_id, DATE('now', '+7 days'))
     `);
 
 function createSession(user_id) {
   // quick way to generate a random string in Node
-  const id = crypto.randomBytes(18).toString("base64");
-  insert_session.run({ id, user_id });
+  const sid = crypto.randomBytes(18).toString("base64");
+  insert_session.run({ sid, user_id });
 
-  return id;
+  // return the generated ID so we can store in a cookie
+  return sid;
 }
 
 const select_session = db.prepare(`
