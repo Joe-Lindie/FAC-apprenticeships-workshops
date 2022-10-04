@@ -6,12 +6,17 @@ const { Layout } = require("../templates.js");
 
 const { getSession } = require("../model/session");
 
+///////////////
+
+// CHALLENGE 5: HIDE CONFESSIONS
+
+/////////////////
+
 function get(req, res) {
   const sid = req.signedCookies.sid; // session ID from signed cookie
   const session = getSession(sid); // pass sid to the getSessions fn
   const loggedInUserId = session && session.user_id;
   const pageOwner = Number(req.params.user_id); // Will add any value to the req.params object
-  //console.log(page_owner);
 
   if (loggedInUserId !== pageOwner) {
     //user logged in
@@ -55,19 +60,34 @@ function get(req, res) {
   res.send(body);
 }
 
+///////////////
+
+// CHALLENGE 6: PROTECT CONFESSION SUBMISSION
+
+/////////////////
+
 function post(req, res) {
-  /**
-   * Currently any user can POST to any other user's confessions (this is bad!)
-   * We can't rely on the URL params. We can only trust the cookie.
-   * [1] Get the session ID from the cookie
-   * [2] Get the session from the DB
-   * [3] Get the logged in user's ID from the session
-   * [4] Use the user ID to create the confession in the DB
-   * [5] Redirect back to the logged in user's confession page
-   */
-  const current_user = Number(req.params.user_id);
-  createConfession(req.body.content, current_user);
-  res.redirect(`/confessions/${current_user}`);
+  const sid = req.signedCookies.sid;
+  const session = getSession(sid);
+  const loggedInUser = session && session.user_id;
+  const content = req.body.content;
+
+  if (!loggedInUser || !content) {
+    return res.status(401).send("<h1>Confession failed</h1>");
+    //.status() and .send() always have to be togther, right?
+  }
+  createConfession(content, loggedInUser);
+  res.redirect(`/confessions/${loggedInUser}`);
 }
+
+/**
+ * Currently any user can POST to any other user's confessions (this is bad!)
+ * We can't rely on the URL params. We can only trust the cookie.
+ * [1] Get the session ID from the cookie
+ * [2] Get the session from the DB
+ * [3] Get the logged in user's ID from the session
+ * [4] Use the user ID to create the confession in the DB
+ * [5] Redirect back to the logged in user's confession page
+ */
 
 module.exports = { get, post };

@@ -37,6 +37,7 @@ const { createUser } = require("../model/user");
 
 function post(req, res) {
   const { email, password } = req.body;
+  //console.log(req.body);
   if (!email || !password) {
     res.status(400).send("Bad input");
   } else {
@@ -44,17 +45,20 @@ function post(req, res) {
     bcrypt.hash(password, 12).then((hash) => {
       //Insert a new user into the DB
       const user = createUser(email, hash);
-      console.log(user);
+      //console.log(user);
+      // {id:20}
 
       //Insert a new session into the DB
       const session_id = createSession(user.id);
+      //console.log(session_id)
+      //20
 
       //Set a signed sid cookie containing the session ID
       res.cookie("sid", session_id, {
         signed: true,
-        httpOnly: true,
-        maxAge: 6000,
-        sameSite: "lax",
+        httpOnly: true, // not sure of meaning...?
+        maxAge: 6000, // time in seconds.
+        sameSite: "lax", // not sure of meaning...?
       });
 
       //Redirect to the new user's confession page

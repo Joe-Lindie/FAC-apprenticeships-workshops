@@ -42,7 +42,10 @@ const insert_session = db.prepare(/*sql*/ `
 function createSession(user_id) {
   // quick way to generate a random string in Node
   const sid = crypto.randomBytes(18).toString("base64");
+  // console.log(sid); returned random string
+
   insert_session.run({ sid, user_id });
+  //console.log({ sid, user_id });
 
   // return the generated ID so we can store in a cookie
   return sid;
