@@ -1,6 +1,7 @@
 import Greeting from "./Greeting";
 import Shouter from "./Shouter";
 import MouseTracker from "./MouseTracker";
+import ChooseRating from "./ChooseRating.jsx";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Greeting name="Joe" />
       <Shouter />
       <MouseTracker />
+      <ChooseRating />
     </main>
   );
 }
